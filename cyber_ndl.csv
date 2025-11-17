@@ -1,0 +1,23 @@
+date,place,company,company_domain,attack_type,consequence,perpetrator,Addcom_related,state_related
+Jan 17,Amsterdam,AerCap,Aircraft leasing company,Ransomware,1 TB of data extracted,Slug,False,False
+Feb 15,Oudeschild,AB Texel,Logistics company,Ransomware,No major consequence according to the company,Cactus,False,False
+Feb 19,Leiden,HAL Allergy,Pharmaceutical company,Ransomware,,,False,False
+Feb 26,Renswoude,EAS Europe,Mechanical engineering company,Ransomware,"Encrypted data; sensitive data stolen; services shut down",,False,False
+Mar 25,Netherlands,Public Administration,Public administration,DDoS,Websites of several provinces inaccessible,,False,True
+Mar 29,Voorschoten,Municipality of Voorschoten,Municipality,DDoS,Inability to work from home,,False,True
+Mar 29,Wassenaar,Municipality of Wassenaar,Municipality,DDoS,Inability to work from home,,False,True
+Mar 1,Nijmegen,Nexperia,Chip maker,Ransomware,Customer data stolen,Dunghill Leak,False,True
+Apr 11,Ede,Iddink Learning Materials,Distributor,Ransomware,"Customer data leak, including bank information",Cactus,False,False
+,The Hague,Europol,Police Agency,Unknown,"No operational data stolen according to Europol; serious infiltration according to IntelBroker",IntelBroker,False,True
+May 17,Amsterdam,ABN Amro,Bank,Ransomware,Customer data compromised,,False,False
+May 17,'s-Hertogenbosch,Essent,Energy supply company,Ransomware,No personal data stolen,,False,False
+May 17,Utrecht,Portaal,Housing association,Ransomware,Data stolen,,True,False
+May 17,Amersfoort,AddComm,Service provider,Ransomware,Data stolen,,AddComm,False
+May 17,Schiedam,Regionale Belasting Groep,Tax authority,Ransomware,Data stolen and encrypted,,True,False
+May 17,Heerhugowaard,Hoogheemraadschap Hollands Noorderkwartier,Water authority,Ransomware,Data stolen,,True,False
+May 17,Groningen,Waterbedrijf Groningen,Water utility,Ransomware,Customer data compromised,,True,False
+May 17,Assen,WMD Drinkwater,Water utility,Ransomware,Data stolen,,True,False
+June 1,Netherlands,,Political websites,DDoS,Services unavailable,HackNet,False,True
+Sep 1,Haarlemmermeer,Kawasaki Motors Europe,Car manufacturer,Ransomware,500 GB data stolen,RansomHub,False,False
+Sep 1,Netherlands,Police of the Netherlands,Police,Unknown,No sensitive data stolen,,False,True
+Dec 1,Houten,Bnext,Waste recycling company,Unknown,500 GB data leak,Black Basta,False,False
