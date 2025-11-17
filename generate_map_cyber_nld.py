@@ -12,6 +12,7 @@ Minimal changes applied:
 import pandas as pd
 import json
 import os
+import shutil
 from geopy.geocoders import Nominatim
 from geopy.extra.rate_limiter import RateLimiter
 from dateutil import parser as dateparser
@@ -117,6 +118,11 @@ for _, row in df.iterrows():
     company = row["company"] or ""
     is_company_addcomm = company.strip().lower() == "addcomm"
     domain = row["company_domain"].strip() if row["company_domain"] else ""
+        # determine perpetrator with fallback
+    perp_value = row["perpetrator"].strip() if row["perpetrator"] else ""
+    if not perp_value:
+        perp_value = "Lockit"
+
     rdict = {
         "date_raw": row["date"],
         "date_iso": row["_date_iso"],  # may be None
@@ -125,13 +131,14 @@ for _, row in df.iterrows():
         "company_domain": domain,
         "attack_type": row["attack_type"],
         "consequence": row["consequence"],
-        "perpetrator": row["perpetrator"],
+        "perpetrator": perp_value,                # <- uses Lockit fallback
         "Addcom_related": bool(row["Addcom_related_bool"]),
         "state_related": bool(row["state_related_bool"]),
         "is_company_addcomm": is_company_addcomm,
         "lat": lat,
         "lon": lon,
     }
+
     rows.append(rdict)
 
 attack_types = sorted(list({r["attack_type"] for r in rows if r["attack_type"]}))
@@ -269,7 +276,7 @@ html_template = """
   <div id="eduOverlay"></div>
   <div id="eduDialog" role="dialog" aria-modal="true" aria-labelledby="eduTitle" tabindex="-1">
     <div id="eduInner">
-      <img id="eduImage" src="C:/Users/bengu/Documents/cyber_nld/image.jpeg" alt="Educational image" />
+    <img id="eduImage" src="image.jpeg" alt="Educational image" />
       <div id="eduText">
         <h1 id="eduTitle">⚠️ Simulated Security Incident — Educational</h1>
         <div id="eduContent">
@@ -345,7 +352,7 @@ html_template = """
     const dateText = r.date_iso ? new Date(r.date_iso).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : (r.date_raw || 'Unknown date');
     const place = r.place || '—';
     const company = r.company || '—';
-    const perpetrator = r.perpetrator || '—';
+    const perpetrator = (r.perpetrator && String(r.perpetrator).trim()) ? String(r.perpetrator).trim() : 'Lockit';
     const consequence = r.consequence || '—';
 
     // Prefer a real company domain if available, otherwise fallback to example.com/report/123
@@ -372,7 +379,7 @@ html_template = """
                   data-yt="${escapeHtml(yt_candidate)}"
                   data-orig="${escapeHtml(rawUrl)}"
                   data-company="${escapeHtml(company)}"
-                  data-perp="${escapeHtml(perpetrator)}"
+                    data-perp="${escapeHtml(perpetrator)}"
                   data-date="${escapeHtml(dateText)}"
                   >${displayUrlText}</a>
       </div>
@@ -687,6 +694,24 @@ ackCheckbox.addEventListener('change', function(){
 </body>
 </html>
 """
+
+image_local_name = "image.jpeg"          # nom tel qu'il est dans ton repo root
+# chemin vers le fichier image *depuis l'endroit où tu exécutes le script*
+image_src_path = os.path.join(os.getcwd(), image_local_name)
+# dossier où le HTML sera écrit
+out_dir = os.path.dirname(out_html) or "."
+
+dest_path = os.path.join(out_dir, image_local_name)
+
+if os.path.exists(image_src_path):
+    try:
+        shutil.copy2(image_src_path, dest_path)
+        print(f"Image copiée : {image_src_path} -> {dest_path}")
+    except Exception as e:
+        print("Warning: impossible de copier l'image :", e)
+else:
+    print(f"Warning: image '{image_local_name}' introuvable dans le dossier courant ({os.getcwd()}). "
+          "Si le fichier est ailleurs, modifie image_src_path pour pointer vers son emplacement exact.")
 
 # ---------- FILL PLACEHOLDERS & WRITE ----------
 html_filled = html_template.replace("__ATTACK_OPTIONS__", attack_options).replace("__DATA_JSON__", data_json)
